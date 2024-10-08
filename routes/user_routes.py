@@ -20,6 +20,10 @@ def register_user():
 
     if not username or not email or not password:
         return jsonify({"error": "All fields are required"}), 400
+    
+    user_exists = User.query.filter_by(username=username).first()
+    if user_exists:
+        return jsonify({"error": "User already exists"}), 400
 
     hashed_password = generate_password_hash(password)
     try:
